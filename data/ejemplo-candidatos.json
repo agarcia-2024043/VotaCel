@@ -1,0 +1,13 @@
+[
+  { "directivaId": "diaconos", "nombre": "Juan Pérez", "numero": 1, "foto": "img/candidatos/1.webp" },
+  { "directivaId": "diaconos", "nombre": "Carlos Gómez", "numero": 2, "foto": "img/candidatos/2.webp" },
+  { "directivaId": "diaconos", "nombre": "Luis Ramírez", "numero": 3, "foto": "" },
+  { "directivaId": "diaconos", "nombre": "Pedro Sánchez", "numero": 4, "foto": "" },
+  { "directivaId": "diaconos", "nombre": "Mateo Torres", "numero": 5, "foto": "" },
+  { "directivaId": "diaconisas", "nombre": "María López", "numero": 1, "foto": "" },
+  { "directivaId": "diaconisas", "nombre": "Ana Martínez", "numero": 2, "foto": "" },
+  { "directivaId": "diaconisas", "nombre": "Rut Hernández", "numero": 3, "foto": "" },
+  { "directivaId": "diaconisas", "nombre": "Sara Díaz", "numero": 4, "foto": "" },
+  { "directivaId": "diaconisas", "nombre": "Lidia Castro", "numero": 5, "foto": "" }
+]
+

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#000000">
+  <title>Pantalla Principal · Resultados en Vivo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .proj-screen {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 90vh;
+      text-align: center;
+      padding: 30px 20px;
+    }
+    .proj-big-num {
+      font-family: var(--font-mono);
+      font-size: clamp(5rem, 18vw, 12rem);
+      font-weight: 800;
+      line-height: 1;
+      color: var(--cyan);
+      text-shadow: var(--cyan-glow);
+      margin: 10px 0;
+    }
+    .proj-leader-name {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: #FFF;
+      letter-spacing: -0.02em;
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <a id="p-volver" class="btn btn-ghost" href="admin.html" style="position:fixed; top:20px; left:20px; z-index:50;" hidden>← Consola</a>
+
+  <section id="p-login" class="proj-screen">
+    <div class="badge-tag">Modo Auditorio</div>
+    <h1 style="font-size:2.2rem; margin-bottom:10px;">Proyector en Vivo</h1>
+    <p style="color:var(--text-muted); max-width:420px; margin-bottom:24px;">Requiere una sesión de administrador activa en este navegador.</p>
+    <a class="btn btn-primary" href="admin.html">Iniciar Sesión de Admin</a>
+  </section>
+
+  <main id="p-main" class="proj-screen" hidden aria-live="polite">
+    <div class="badge-tag" id="p-directiva">Elección en Vivo</div>
+    <h2 id="p-cargo" style="font-size: clamp(2rem, 6vw, 4rem); font-weight:800; color:#FFF; margin-bottom:10px;">—</h2>
+    <div id="p-cuerpo" style="width:100%; display:flex; flex-direction:column; align-items:center;"></div>
+  </main>
+
+  <script type="module" src="js/pantalla.js?v=2"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#000000">
+  <title>Votación en Vivo · Plataforma Digital</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- Header tipo píldora SaaS (Glassmorphism) -->
+  <header class="navbar-wrap">
+    <nav class="site-navbar">
+      <div class="nav-brand">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span>Elección en Vivo</span>
+      </div>
+      <div id="estado-sesion" style="font-size: 0.85rem; color: var(--cyan); display: flex; align-items: center; gap: 6px;">
+        <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:var(--cyan); box-shadow: 0 0 8px var(--cyan);"></span>
+        <span>Conectado</span>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container">
+    <!-- 1. Pantalla de Espera (Minimalista, Glow) -->
+    <section id="s-espera" class="status-screen" hidden aria-labelledby="t-espera">
+      <div class="hero">
+        <div class="badge-tag" id="espera-directiva">Directiva</div>
+        <h1 id="t-espera">Esperando Ronda</h1>
+        <p id="espera-mensaje">El administrador abrirá la siguiente votación en unos momentos.</p>
+      </div>
+      
+      <div class="cyan-pulse" aria-hidden="true"></div>
+
+      <!-- Ya elegidos -->
+      <div id="elegidos" class="glass-panel" style="margin-top: 32px; text-align: left;" hidden>
+        <div style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); margin-bottom: 12px; font-weight: 700;">
+          Directiva Electa
+        </div>
+        <ul id="lista-elegidos" style="list-style: none; display: flex; flex-direction: column; gap: 8px;"></ul>
+      </div>
+    </section>
+
+    <!-- 2. Pantalla de Votar (Cards Glassmorphism) -->
+    <section id="s-votar" hidden aria-labelledby="t-votar">
+      <div class="hero">
+        <div class="badge-tag" id="votar-directiva">Directiva en curso</div>
+        <h1 id="t-votar">Elegir <span id="votar-cargo" style="color: var(--cyan);">—</span></h1>
+        <p>Selecciona un candidato para registrar tu voto único en este dispositivo.</p>
+      </div>
+
+      <ul id="grid" class="grid" role="list" aria-label="Candidatos"></ul>
+      
+      <!-- Barra inferior flotante de confirmación -->
+      <div class="votebar-wrap">
+        <div class="votebar" role="region" aria-label="Confirmación de voto">
+          <div class="votebar-text" id="votebar-text">Selecciona un candidato</div>
+          <button id="btn-votar" class="btn btn-primary" type="button" disabled>Votar Ahora</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Pantalla de Voto Registrado (Éxito) -->
+    <section id="s-registrado" class="status-screen" hidden aria-labelledby="t-registrado">
+      <svg class="check-success" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="44"/>
+        <path d="M30 52 L44 66 L72 36"/>
+      </svg>
+      <div class="hero" style="margin: 0;">
+        <div class="badge-tag" style="background: rgba(0,229,255,0.15); border-color: var(--cyan);">Completado</div>
+        <h1 id="t-registrado" style="color: #FFF;">Tu voto fue registrado</h1>
+        <p>Tu participación es 100% anónima. Espera a que el administrador cierre la ronda para conocer al ganador.</p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="js/voter.js?v=2"></script>
+</body>
+</html>
