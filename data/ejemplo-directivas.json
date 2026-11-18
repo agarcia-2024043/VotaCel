@@ -1,0 +1,27 @@
+[
+  {
+    "id": "diaconos",
+    "nombre": "Diáconos",
+    "orden": 1,
+    "cargos": [
+      { "id": "presidente", "nombre": "Presidente", "orden": 1 },
+      { "id": "vicepresidente", "nombre": "Vicepresidente", "orden": 2 },
+      { "id": "secretario", "nombre": "Secretario", "orden": 3 },
+      { "id": "tesorero", "nombre": "Tesorero", "orden": 4 },
+      { "id": "vocal", "nombre": "Vocal", "orden": 5 }
+    ]
+  },
+  {
+    "id": "diaconisas",
+    "nombre": "Diaconisas",
+    "orden": 2,
+    "cargos": [
+      { "id": "presidenta", "nombre": "Presidenta", "orden": 1 },
+      { "id": "vicepresidenta", "nombre": "Vicepresidenta", "orden": 2 },
+      { "id": "secretaria", "nombre": "Secretaria", "orden": 3 },
+      { "id": "tesorera", "nombre": "Tesorera", "orden": 4 },
+      { "id": "vocal", "nombre": "Vocal", "orden": 5 }
+    ]
+  }
+]
+

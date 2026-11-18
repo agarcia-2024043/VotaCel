@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#000000">
+  <title>Panel de Control · Votación</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="ambient-glow" aria-hidden="true"></div>
+
+  <!-- Header Navbar tipo píldora -->
+  <header class="navbar-wrap no-print">
+    <nav class="site-navbar">
+      <div class="nav-brand">
+        <div class="nav-logo-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+        </div>
+        <span>Consola de Votación</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <a class="btn btn-ghost" style="height:36px; padding:0 14px; font-size:0.8rem;" href="pantalla.html" id="lnk-pantalla" hidden>Proyector</a>
+        <button id="btn-salir" class="btn btn-danger" style="height:36px; padding:0 14px; font-size:0.8rem;" type="button" hidden>Salir</button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Login Modal / Card -->
+  <section id="login" class="container" style="display:flex; justify-content:center; align-items:center; min-height:75vh;">
+    <div class="glass-panel" style="width:100%; max-width:400px; text-align:left;">
+      <div class="badge-tag">Autenticación</div>
+      <h1 style="font-size:1.6rem; font-weight:800; margin-bottom:6px;">Iniciar Sesión</h1>
+      <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Acceso restringido para el control de la votación.</p>
+      <form id="form-login">
+        <div style="margin-bottom:12px;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Correo electrónico</label>
+          <input id="correo" type="email" autocomplete="username" required placeholder="admin@iglesia.org">
+        </div>
+        <div style="margin-bottom:18px;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Contraseña</label>
+          <input id="clave" type="password" autocomplete="current-password" required placeholder="••••••••">
+        </div>
+        <button class="btn btn-primary" style="width:100%;" type="submit">Acceder</button>
+        <p id="login-error" style="color:#FF453A; font-size:0.85rem; margin-top:12px;" role="alert"></p>
+      </form>
+    </div>
+  </section>
+
+  <!-- Panel Principal: TODO EN MONITOREO Y CONTROL DIRECTO -->
+  <main id="panel" class="container" hidden>
+    
+    <!-- 1. Selección y Activación de Directiva -->
+    <div class="glass-panel">
+      <div style="font-size:0.8rem; text-transform:uppercase; color:var(--text-dim); font-weight:700; margin-bottom:10px;">1. Seleccionar Directiva</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <select id="sel-directiva" style="flex:1; min-width:220px;"></select>
+        <button class="btn btn-primary" id="btn-activar" type="button">Activar Directiva</button>
+      </div>
+      <p style="font-size:0.8rem; color:var(--text-muted); margin-top:8px;">
+        * Los candidatos y cargos se cargan directamente desde <code>js/candidatos-datos.js</code>.
+      </p>
+    </div>
+
+    <!-- 2. Monitoreo en Vivo de la Ronda -->
+    <div class="glass-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
+        <div>
+          <div class="badge-tag" id="v-estado">Estado</div>
+          <h2 id="v-titulo" style="font-size:1.5rem; font-weight:800;">Sin ronda activa</h2>
+          <p id="v-sub" style="color:var(--text-muted); font-size:0.85rem;"></p>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:0.75rem; text-transform:uppercase; color:var(--text-dim); font-weight:700;">Votos Totales</div>
+          <div id="v-total" style="font-family:var(--font-mono); font-size:2.2rem; font-weight:800; color:var(--cyan);">0</div>
+        </div>
+      </div>
+
+      <!-- Barras de resultados en vivo -->
+      <div id="v-bars" class="bars"></div>
+    </div>
+
+    <!-- 3. Controles Operativos de la Votación -->
+    <div class="glass-panel">
+      <div style="font-size:0.8rem; text-transform:uppercase; color:var(--text-dim); font-weight:700; margin-bottom:12px;">2. Operar Ronda</div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+        <button class="btn btn-primary" id="btn-abrir" type="button" hidden>Abrir Votación</button>
+        <button class="btn btn-danger" id="btn-cerrar" type="button" hidden>Cerrar y Declarar 1 Ganador</button>
+        <button class="btn btn-cyan" id="btn-cerrar-dos" type="button" hidden>Elegir 2 Ganadores</button>
+        <button class="btn btn-primary" id="btn-siguiente-ronda" type="button" hidden>Siguiente Elección de Diácono (Nueva Ronda)</button>
+        <button class="btn btn-ghost" id="btn-completar-directiva" style="border-color:rgba(0,229,255,0.5); color:var(--cyan); font-weight:700;" type="button" hidden>Completar Directiva</button>
+        <button class="btn btn-primary" id="btn-reintentar" type="button" hidden>Reintentar Cómputo</button>
+        <button class="btn btn-danger" id="btn-repetir-ronda" type="button" hidden>Reiniciar Esta Ronda</button>
+        <button class="btn btn-danger" id="btn-reabrir-cargo" type="button" hidden>Reabrir Cargo</button>
+      </div>
+
+      <!-- Selector para segundo ganador -->
+      <div id="box-segundo-ganador" style="display:none; padding:12px; background:rgba(0,229,255,0.06); border:1px solid rgba(0,229,255,0.3); border-radius:var(--radius-md); margin-top:10px;">
+        <div style="font-size:0.85rem; font-weight:700; color:var(--cyan); margin-bottom:6px;">Seleccionar Segundo Diácono / Ganador:</div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <select id="sel-segundo-ganador" style="flex:1; min-width:200px;"></select>
+          <button class="btn btn-cyan" id="btn-confirmar-dos" type="button">Proclamar Ambos en Pantalla</button>
+          <button class="btn btn-ghost" id="btn-cancelar-dos" type="button">Cancelar</button>
+        </div>
+      </div>
+      <p id="v-msg" style="color:var(--cyan); font-weight:600; font-size:0.9rem; margin-top:12px;" role="status"></p>
+    </div>
+
+    <!-- 4. Resolución de Empates (si ocurre) -->
+    <div class="glass-panel" id="v-empate" style="border-color: rgba(255,214,10,0.4);" hidden>
+      <div class="badge-tag" style="background:rgba(255,214,10,0.15); border-color:#FFD60A; color:#FFD60A;">Empate Registrado</div>
+      <h2 style="font-size:1.3rem; margin-bottom:8px;">Resolución de Empate</h2>
+      <p id="v-empate-txt" style="color:var(--text-muted); font-size:0.9rem; margin-bottom:16px;"></p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-cyan" id="btn-segunda" type="button">Abrir Segunda Vuelta</button>
+      </div>
+      <hr style="border:none; border-top:1px solid var(--border); margin:20px 0;">
+      <h3 style="font-size:1rem; margin-bottom:8px;">Desempate Manual</h3>
+      <div style="margin-bottom:12px;">
+        <label style="font-size:0.8rem; color:var(--text-muted);">Candidato Ganador</label>
+        <select id="desempate-ganador"></select>
+      </div>
+      <div style="margin-bottom:14px;">
+        <label style="font-size:0.8rem; color:var(--text-muted);">Motivo justificado</label>
+        <textarea id="desempate-motivo" placeholder="Criterio establecido por la asamblea..."></textarea>
+      </div>
+      <button class="btn btn-primary" id="btn-desempate" type="button">Confirmar Desempate</button>
+    </div>
+
+    <!-- 5. Historial de Cargos Electos -->
+    <div class="glass-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <div style="font-size:0.85rem; font-weight:700;">Progreso de Cargos y Ganadores</div>
+        <button class="btn btn-danger" style="font-size:0.75rem; height:32px; padding:0 12px;" id="btn-reiniciar-directiva" type="button">Restablecer Todo</button>
+      </div>
+      <div class="tablewrap">
+        <table>
+          <thead><tr><th>Cargo</th><th>Ronda</th><th>Estado</th><th>Ganador Electo</th><th></th></tr></thead>
+          <tbody id="tabla-rondas"></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script type="module" src="js/admin.js?v=2"></script>
+</body>
+</html>

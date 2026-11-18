@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{db}/documents {
+
+    function signedIn() { return request.auth != null; }
+    function isAdmin() {
+      return signedIn() &&
+        exists(/databases/$(db)/documents/admins/$(request.auth.uid));
+    }
+
+    match /admins/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow write: if false;
+    }
+
+    match /config/{d}  { allow read: if signedIn(); allow write: if isAdmin(); }
+    match /tallies/{d} { allow read, write: if isAdmin(); }
+
+    match /audit/{d} {
+      allow read, create: if isAdmin();
+      allow update, delete: if false;
+    }
+
+    match /rounds/{roundId} {
+      allow read: if signedIn();
+      allow write: if isAdmin();
+
+      // Votación 100% anónima: el ID del voto ES el UID del dispositivo anónimo
+      match /votes/{uid} {
+        // CADA DISPOSITIVO PUEDE CONSULTAR SU PROPIO DOCUMENTO (exista o no)
+        allow get: if signedIn() && request.auth.uid == uid;
+        allow list: if isAdmin();
+        allow create: if signedIn()
+          && request.auth.uid == uid
+          && get(/databases/$(db)/documents/rounds/$(roundId)).data.status == 'open'
+          && request.resource.data.keys().hasOnly(['candidateId','createdAt'])
+          && request.resource.data.keys().hasAll(['candidateId','createdAt'])
+          && request.resource.data.createdAt == request.time
+          && request.resource.data.candidateId is string
+          && request.resource.data.candidateId in
+               get(/databases/$(db)/documents/rounds/$(roundId)).data.candidateIds;
+        allow update: if false;
+        allow delete: if isAdmin();
+      }
+    }
+  }
+}
